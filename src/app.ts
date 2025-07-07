@@ -1,9 +1,11 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import userRoute from "./routes/userRoute";
 const app = express();
-const PORT = 3000; // Port number
+const PORT = 3000;
 dotenv.config();
+app.use(express.json());
 
 mongoose
   .connect(process.env.MONGO_URI as string)
@@ -14,9 +16,7 @@ mongoose
     console.log("Connection failed", err);
   });
 
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
+app.use("/user", userRoute);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
