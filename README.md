@@ -17,7 +17,6 @@ A modern e-commerce platform built with Node.js, Express, TypeScript, and MongoD
 - **Database**: MongoDB with Mongoose ODM
 - **Authentication**: JWT, bcrypt
 - **Development**: Docker, Docker Compose
-- **CI/CD**: Jenkins pipeline
 
 ## Getting Started
 
