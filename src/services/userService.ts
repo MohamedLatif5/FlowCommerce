@@ -8,6 +8,11 @@ interface RegisterParams {
   password: string;
 }
 
+const generateJWT = (data: any) => {
+  return jwt.sign({ data }, process.env.JWT_SECRET as string);
+};
+
+
 // Function to register a new user
 export const registerUser = async (params: RegisterParams) => {
   const { firstName, lastName, email, password } = params;
@@ -58,6 +63,4 @@ export const loginUser = async (params: loginParams) => {
   return { data: "incorrect email or password.", statuscode: 400 };
 };
 
-const generateJWT = (data: any) => {
-  return jwt.sign({ data }, process.env.JWT_SECRET as string);
-};
+
