@@ -31,7 +31,7 @@ A modern e-commerce platform built with Node.js, Express, TypeScript, and MongoD
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/MohamedEid20/E-Commerce.git
+git clone https://github.com/MohamedLatif5/FlowCommerce.git
 
 2. Start the application using Docker Compose:
  docker-compose up
