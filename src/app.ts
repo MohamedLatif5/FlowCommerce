@@ -3,9 +3,9 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import userRoute from "./routes/userRoute";
 import productRoute from "./routes/productRoute";
-const app = express();
-const PORT = 3000;
+import cartRoute from "./routes/cartRoute";
 dotenv.config();
+const app = express();
 app.use(express.json());
 
 mongoose
@@ -19,7 +19,6 @@ mongoose
 
 app.use("/user", userRoute);
 app.use("/products", productRoute);
+app.use("/cart", cartRoute);
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+export default app;
