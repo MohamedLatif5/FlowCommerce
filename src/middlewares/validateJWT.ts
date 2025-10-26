@@ -1,13 +1,15 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { userModel } from "../models/userModel";
-import { ExtendsRequest } from "../types/extendsRequest";
 
+export interface extendsRequest extends Request {
+  user?: any;
+}
 // validate JWT
 const validateJWT = (
-  req: ExtendsRequest,
+  req: extendsRequest,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   const authHeader = req.get("authorization");
 
@@ -23,7 +25,7 @@ const validateJWT = (
     return;
   }
 
-  // verify token
+// verify token
   jwt.verify(token, process.env.JWT_SECRET as string, async (err, payload) => {
     if (err) {
       res.status(403).json("Invalid token");
@@ -40,7 +42,7 @@ const validateJWT = (
       firstName: string;
       lastName: string;
     };
-
+    
     // fetch user from Database
     const user = await userModel.findOne({ email: userPayload.email });
     req.user = user;
