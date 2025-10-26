@@ -1,16 +1,15 @@
 import mongoose, { Schema, ObjectId, Document } from "mongoose";
-import { IProduct } from "./productModel";
 
 const CartStatus = ["pending", "completed"];
 
-export interface ICartItem extends Document {
-  product: IProduct;
+export interface ICartItem {
+  product: ObjectId;
   unitPrice: number;
   quantity: number;
 }
 
 export interface ICart extends Document {
-  userId: ObjectId | string;
+  userId: ObjectId;
   items: ICartItem[];
   totalAmount: number;
   status: "pending" | "completed";
@@ -18,8 +17,8 @@ export interface ICart extends Document {
 
 const cartItemSchema = new Schema<ICartItem>({
   product: { type: Schema.Types.ObjectId, ref: "Product", required: true },
-  unitPrice: { type: Number, required: true },
-  quantity: { type: Number, required: true, default: 1 },
+  unitPrice: { type: Number, required: true, min: 0 },
+  quantity: { type: Number, required: true, default: 1, min: 1 },
 });
 
 const cartSchema = new Schema<ICart>(
