@@ -36,13 +36,15 @@ const validateJWT = (
 
     // extract payload
     const userPayload = payload as {
-      email: string;
-      firstName: string;
-      lastName: string;
+      data: {
+        email: string;
+        firstName: string;
+        lastName: string;
+      };
     };
 
     // fetch user from Database
-    const user = await userModel.findOne({ email: userPayload.email });
+    const user = await userModel.findOne({ email: userPayload.data.email });
     req.user = user;
     next();
   });
