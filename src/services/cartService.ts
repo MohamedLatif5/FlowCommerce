@@ -15,7 +15,7 @@ interface GetCartUserParams {
   userId: string;
 }
 export const getCartUser = async ({ userId }: GetCartUserParams) => {
-  let cart = await CartModel.findOne({ userId, status: "active" });
+  let cart = await CartModel.findOne({ userId, status: "pending" });
   if (!cart) {
     cart = await creatCartUser({ userId });
   }
@@ -38,7 +38,7 @@ export const addItemToCart = async ({
 
   // check if the product exists in the cart
   const existsInCart = cart.items.find(
-    (p) => p.product.toString() === productId
+    (p) => p.product.toString() === productId,
   );
 
   if (existsInCart) {
