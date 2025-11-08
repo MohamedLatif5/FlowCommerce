@@ -5,4 +5,4 @@ export { register, login } from "./userController";
 export { getAll, getById, create, update, remove } from "./productController";
 
 // Cart Controllers
-export { getCart, addItem } from "./cartController";
+export { getCart, addItem, updateItem, deleteItem } from "./cartController";
