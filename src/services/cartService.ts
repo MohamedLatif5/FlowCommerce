@@ -38,7 +38,7 @@ export const addItemToCart = async ({
 
   // check if the product exists in the cart
   const existsInCart = cart.items.find(
-    (p) => p.product.toString() === productId,
+    (p) => p.product.toString() === productId
   );
 
   if (existsInCart) {
@@ -63,4 +63,82 @@ export const addItemToCart = async ({
   const updateCart = await cart.save();
 
   return { data: updateCart, statusCode: 200 };
+};
+
+// Update item in cart
+interface UpdateItemInCartParams {
+  userId: string;
+  productId: string;
+  quantity: number;
+}
+
+export const updateItemInCart = async ({
+  userId,
+  productId,
+  quantity,
+}: UpdateItemInCartParams) => {
+  // Retrieve the user's cart
+  const cart = await getCartUser({ userId });
+
+  // Find the item in the cart
+  const itemIndex = cart.items.findIndex(
+    (p) => p.product.toString() === productId
+  );
+
+  if (itemIndex === -1) {
+    return { data: "Item not found in cart", statusCode: 404 };
+  }
+
+  // Get the old quantity to adjust total amount
+  const oldQuantity = cart.items[itemIndex].quantity;
+  const unitPrice = cart.items[itemIndex].unitPrice;
+
+  // Update the quantity
+  cart.items[itemIndex].quantity = quantity;
+
+  // Recalculate total amount
+  cart.totalAmount += unitPrice * (quantity - oldQuantity);
+
+  // Save the cart
+  const updatedCart = await cart.save();
+
+  return { data: updatedCart, statusCode: 200 };
+};
+
+// Delete item from cart
+interface DeleteItemFromCartParams {
+  userId: string;
+  productId: string;
+}
+
+export const deleteItemFromCart = async ({
+  userId,
+  productId,
+}: DeleteItemFromCartParams) => {
+  // Retrieve the user's cart
+  const cart = await getCartUser({ userId });
+
+  // Find the item in the cart
+  const itemIndex = cart.items.findIndex(
+    (p) => p.product.toString() === productId
+  );
+
+  if (itemIndex === -1) {
+    return { data: "Item not found in cart", statusCode: 404 };
+  }
+
+  // Get the item details before removing
+  const item = cart.items[itemIndex];
+  const itemTotal = item.unitPrice * item.quantity;
+
+  // Remove the item from cart
+  cart.items.splice(itemIndex, 1);
+
+  // Update total amount
+  cart.totalAmount -= itemTotal;
+
+  // Save the cart
+  const updatedCart = await cart.save();
+
+  return { data: updatedCart, statusCode: 200 };
 };
